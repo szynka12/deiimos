@@ -11,7 +11,18 @@ project(hello)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
 
-# The following folder will be included
-include_directories("${PROJECT_SOURCE_DIR}")
+# set(HEADER_FILES "${PROJECT_SOURCE_DIR}/XMLHandler.h")
+set(SOURCES "${PROJECT_SOURCE_DIR}/XMLHandler.cpp")
 
-add_executable(hello ${PROJECT_SOURCE_DIR}/main.cpp)
+# The following folder will be included
+include_directories("${PROJECT_SOURCE_DIR}",  
+                    "${PROJECT_SOURCE_DIR}/../external/src/tinyxml2")
+
+add_executable(hello ${PROJECT_SOURCE_DIR}/main.cpp ${SOURCES})
+
+
+find_library(TINYXML2 names tinyxml2
+             paths "${PROJECT_SOURCE_DIR}/../external/lib/tinyxml2")
+
+target_include_directories(hello PRIVATE "${PROJECT_SOURCE_DIR}")
+target_link_libraries(hello ${TINYXML2})

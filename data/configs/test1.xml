@@ -1,0 +1,8 @@
+<deiimos_config version="0.1" type="ascii">
+    <section>
+        <double>0.1</double>
+        <doubleAttr a="0.1" />
+        <int>1</int>
+        <intAtrr a="1" />
+    </section>
+</deiimos_config>
