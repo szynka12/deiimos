@@ -11,23 +11,15 @@ int main( void )
     tinyxml2::XMLDocument doc;
     doc.LoadFile( "../data/configs/test1.xml" );
 
-    // tinyxml2::XMLHandle handle( &doc );
-
-    double a = 1;
-
-    // tinyxml2::XMLElement* el = handle.FirstChildElement( "deiimos_config" )
-    //                              .FirstChildElement( "section" )
-    //                              .FirstChildElement( "double" );
-
     tinyxml2::XMLHandle docHandle( &doc );
 
-    deiimos::xmlhandler::Node n( docHandle );
+    // deiimos::xmlhandler::Node n( docHandle, "" );
+    tinyxml2::XMLHandle h = docHandle.FirstChildElement( "deiimos_config" );
 
-    tinyxml2::XMLElement* child2 =
-      docHandle.FirstChildElement( "Document" ).ToElement( );
-    if ( !child2 ) { throw std::invalid_argument( "aaa" ); }
-
-    deiimos::msg( ) << a << std::endl;
+    deiimos::xmlhandler::Node n( h, std::string( "deiimos_config" ) );
+    deiimos::msg( )
+      << n.get_child( "section" ).get_child( "double" ).value< double >( )
+      << std::endl;
 
     return ( 0 );
 }

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SRC_MSGSTREAM_H
+#define SRC_MSGSTREAM_H
 
 #include <iostream>
 #include <memory>
@@ -113,3 +114,4 @@ inline std::ostream& warn( )
 }
 
 } // namespace deiimos
+#endif // SRC_MSGSTREAM_H
