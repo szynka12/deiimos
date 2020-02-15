@@ -1,0 +1,20 @@
+<deiimos_config version="0.1" type="ascii">
+    <section>
+        <double>0.1</double>
+        <int>-1</int>
+        <label>1</label>
+        <text>aaa</text>
+        <size>12</size>
+        <bool>false</bool>
+
+        <doubleAttr a="0.1" />
+        <intAttr a="1" />
+
+        <labelAttr a="12" />
+        <textAttr a="xzcc" />
+
+        <boolAttr a="true" />
+
+        <tuple a="2 1 abcd" />
+    </section>
+</deiimos_config>
