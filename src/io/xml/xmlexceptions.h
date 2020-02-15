@@ -18,7 +18,9 @@ DeclException2( XML_NO_ATTRIBUTE,
                 << "No attribute named <" << arg2 << "> found in node <" << arg1
                 << ">." );
 DeclException0( XML_WRONG_ATTRIBUTE_TYPE );
-DeclException0( XML_ERROR_FILE_NOT_FOUND );
+DeclException1( XML_ERROR_FILE_NOT_FOUND,
+                std::string,
+                << "No file found on path <" << arg1 << ">." );
 DeclException0( XML_ERROR_FILE_COULD_NOT_BE_OPENED );
 DeclException0( XML_ERROR_FILE_READ_ERROR );
 DeclException0( XML_ERROR_PARSING_ELEMENT );

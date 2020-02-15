@@ -1,5 +1,5 @@
-#ifndef SRC_MSGSTREAM_H
-#define SRC_MSGSTREAM_H
+#ifndef SRC_IO_CONSOLE_MSGSTREAM_H
+#define SRC_IO_CONSOLE_MSGSTREAM_H
 
 #include <iostream>
 #include <memory>
@@ -95,4 +95,4 @@ inline std::ostream& warn( )
 }
 
 } // namespace deiimos
-#endif // SRC_MSGSTREAM_H
+#endif // SRC_IO_CONSOLE_MSGSTREAM_H

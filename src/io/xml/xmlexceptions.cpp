@@ -16,7 +16,7 @@ void xml_check( tinyxml2::XMLError e,
         case tinyxml2::XML_WRONG_ATTRIBUTE_TYPE:
             throw XML_WRONG_ATTRIBUTE_TYPE( );
         case tinyxml2::XML_ERROR_FILE_NOT_FOUND:
-            throw XML_ERROR_FILE_NOT_FOUND( );
+            throw XML_ERROR_FILE_NOT_FOUND( arg1 );
         case tinyxml2::XML_ERROR_FILE_COULD_NOT_BE_OPENED:
             throw XML_ERROR_FILE_COULD_NOT_BE_OPENED( );
         case tinyxml2::XML_ERROR_FILE_READ_ERROR:

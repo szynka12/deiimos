@@ -1,4 +1,4 @@
-#include "XMLHandler.h"
+#include "XmlNode.h"
 
 namespace deiimos
 {

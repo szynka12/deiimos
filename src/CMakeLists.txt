@@ -28,14 +28,15 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
 
 set(TARGET_SRC  "main.cpp" 
-                "${PROJECT_SOURCE_DIR}/io/xml/XMLHandler.cpp"
-                "${PROJECT_SOURCE_DIR}/msgstream.cpp"
+                "${PROJECT_SOURCE_DIR}/io/xml/XmlNode.cpp"
+                "${PROJECT_SOURCE_DIR}/io/console/msgstream.cpp"
                 "${PROJECT_SOURCE_DIR}/io/xml/xmlexceptions.cpp")
 
 # The following folder will be included
 include_directories("${PROJECT_SOURCE_DIR}",  
                     "${PROJECT_SOURCE_DIR}/../external/src/tinyxml2"
-                    "${PROJECT_SOURCE_DIR}/io/xml")
+                    "${PROJECT_SOURCE_DIR}/io/xml"
+                    "${PROJECT_SOURCE_DIR}/io/console")
 
 # add_executable(main ${PROJECT_SOURCE_DIR}/main.cpp ${SOURCES})
 

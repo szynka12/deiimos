@@ -1,5 +1,5 @@
-#ifndef SRC_XMLHANDLER_H
-#define SRC_XMLHANDLER_H
+#ifndef SRC_IO_XML_XMLNODE_H
+#define SRC_IO_XML_XMLNODE_H
 
 #include "deal.II/base/exceptions.h"
 #include "msgstream.h"
@@ -20,41 +20,55 @@ namespace io
 class XmlNode
 {
   private:
-    tinyxml2::XMLHandle h_;
-    std::string         path_;
-
-    inline void show_me( )
-    {
-        deiimos::msg( ) << "In xml path:" << path_ << std::endl;
-    };
-
+    // read one element from the space delimited string and convert it to one
+    // element of the Type T
     template < typename T >
     bool read_tuple_element( std::istream& in, T& value );
 
+    // write several elements from space delimited string into the Tuple T
     template < typename Tuple, std::size_t... I >
     void read_tuple_elements( std::istream& in,
                               Tuple&        value,
                               std::index_sequence< I... > );
 
+    // convert space delimited string to tuple
     template < typename... Targs >
     std::tuple< Targs... > to_tuple( std::string str_ );
 
+  protected:
+    // handle wrapping a node pointer
+    tinyxml2::XMLHandle h_;
+
+    // path to node in xml tree
+    std::string path_;
+
+    XmlNode( ) : h_( nullptr ){};
+
   public:
     XmlNode( tinyxml2::XMLHandle h, std::string path );
+
+    // get child node
     XmlNode get_child( const char* name );
 
+    inline XmlNode operator[]( const char* name ) { return get_child( name ); }
+
+    // get value
     template < typename T >
     T value( );
 
+    // get tuple of values
     template < typename... Targs >
     std::tuple< Targs... > tuple_value( );
 
+    // get attribute value
     template < typename T >
     T attribute( const char* name );
 
+    // get tuple of attribute values
     template < typename... Targs >
     std::tuple< Targs... > tuple_attribute( const char* name );
 
+    // get attribute value or default value
     template < typename T >
     T attribute_or_default( const char* name, T default_value );
 
@@ -152,4 +166,4 @@ bool XmlNode::attribute< bool >( const char* name );
 } // namespace io
 } // namespace deiimos
 
-#endif // SRC_XMLHANDLER_H
+#endif // SRC_IO_XML_XMLNODE_H

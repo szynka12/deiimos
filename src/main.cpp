@@ -1,4 +1,5 @@
-#include "XMLHandler.h"
+#include "XmlHandler.h"
+#include "XmlNode.h"
 #include "msgstream.h"
 #include "tinyxml2.h"
 
@@ -7,12 +8,6 @@
 #include <iostream>
 #include <tuple>
 #include <utility>
-
-template < typename... Targs >
-std::tuple< Targs... > f( Targs... args )
-{
-    return std::make_tuple( args... );
-}
 
 int main( void )
 {
@@ -81,6 +76,19 @@ int main( void )
 
     deiimos::msg( ) << std::get< 0 >( t ) << " " << std::get< 1 >( t ) << " "
                     << std::get< 2 >( t ) << std::endl;
+
+    deiimos::io::XmlHandler safe_doc( "../data/configs/test1.xml" );
+    safe_doc.load( );
+
+    deiimos::msg( ) << safe_doc.get_child( "deiimos_config" )
+                         .get_child( "section" )
+                         .get_child( "boolAttr" )
+                         .attribute< bool >( "a" )
+                    << std::endl;
+
+    deiimos::msg( ) << safe_doc["deiimos_config"]["section"]["boolAttr"]
+                         .attribute< bool >( "a" )
+                    << std::endl;
 
     return ( 0 );
 }
