@@ -95,8 +95,4 @@ inline std::ostream& warn( )
 }
 
 } // namespace deiimos
-<<<<<<< HEAD:src/msgstream.h
-#endif // SRC_MSGSTREAM_H
-=======
 #endif // SRC_IO_CONSOLE_MSGSTREAM_H
->>>>>>> develop:src/io/console/msgstream.h

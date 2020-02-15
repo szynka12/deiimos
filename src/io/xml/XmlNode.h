@@ -7,11 +7,11 @@
 #include "xmlexceptions.h"
 
 #include <iostream>
-#include <locale>
 #include <memory>
 #include <stdexcept>
 #include <tuple>
 #include <utility>
+#include <vector>
 
 namespace deiimos
 {
@@ -49,6 +49,8 @@ class XmlNode
 
     // get child node
     XmlNode get_child( const char* name );
+
+    std::vector< XmlNode > get_siblings( const char* name );
 
     inline XmlNode operator[]( const char* name ) { return get_child( name ); }
 

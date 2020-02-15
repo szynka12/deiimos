@@ -1,0 +1,23 @@
+<deiimos_config version="0.1" type="ascii">
+    <vertices>
+        <v>0 0 0</v>
+        <v>1 0 0</v>
+        <v>0 1 0</v>
+        <v>1 1 0</v>
+        <v>0 0 1</v>
+        <v>1 0 1</v>
+        <v>0 1 1</v>
+        <v>1 1 1</v>
+        <v>2 0 0</v>
+        <v>2 1 0</v>
+        <v>2 0 1</v>
+        <v>2 1 1</v>
+    </vertices>
+    <hexes>
+        <h>0 1 2 3 4 5 6 7</h>
+        <h>1 8 3 9 5 10 7 11</h>
+    </hexes>
+    <id>
+        <face id="1"></face>
+    </id>
+</deiimos_config>
