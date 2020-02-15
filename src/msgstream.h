@@ -8,7 +8,7 @@
 namespace deiimos
 {
 
-class msgstream
+class MsgObject
 {
   public:
     // verbosity
@@ -40,67 +40,48 @@ class msgstream
     bool    warning_enabled_ = true;
 
   public:
-    msgstream( )
-      : standard_ostream_( std::cout.rdbuf( ) ),
-        null_ostream_( &null_buffer_ ),
-        error_ostream_( std::cerr.rdbuf( ) ),
-        warning_ostream_( std::cout.rdbuf( ) ){};
+    MsgObject( );
 
-    std::ostream& standard( ) { return standard_ostream_; }
+    std::ostream& standard( );
 
-    std::ostream& warning( )
-    {
-        if ( warning_enabled_ ) { return warning_ostream_; }
-        else
-        {
-            return null_ostream_;
-        }
-    }
+    std::ostream& warning( );
 
-    std::ostream& null( ) { return null_ostream_; }
+    std::ostream& null( );
 
-    std::ostream& error( ) { return error_ostream_; }
+    std::ostream& error( );
 
-    std::ostream& msg( v_level l )
-    {
-        if ( l <= out_level_ && out_level_ != SILENT )
-        { return standard_ostream_; }
-        else
-        {
-            return null_ostream_;
-        }
-    }
+    std::ostream& msg( v_level l );
 
-    void set_verobisity( v_level l ) { out_level_ = l; };
-    void set_warning( bool flag ) { warning_enabled_ = flag; }
+    void set_verobisity( v_level l );
+    void set_warning( bool flag );
 };
 
 namespace INTERNAL
 {
 
-msgstream msg_;
+extern MsgObject msg_;
 
 }
 
-inline void verbosity( msgstream::v_level l )
+inline void verbosity( MsgObject::v_level l )
 {
     INTERNAL::msg_.set_verobisity( l );
 }
 inline void verbosity( int l )
 {
     INTERNAL::msg_.set_verobisity(
-      static_cast< deiimos::msgstream::v_level >( l ) );
+      static_cast< deiimos::MsgObject::v_level >( l ) );
 }
 
 inline void set_warning( bool flag ) { INTERNAL::msg_.set_warning( flag ); }
 
-inline std::ostream& msg( msgstream::v_level l = msgstream::INFO1 )
+inline std::ostream& msg( MsgObject::v_level l = MsgObject::INFO1 )
 {
     return INTERNAL::msg_.msg( l );
 }
 inline std::ostream& msg( int l )
 {
-    return msg( static_cast< deiimos::msgstream::v_level >( l ) );
+    return msg( static_cast< deiimos::MsgObject::v_level >( l ) );
 }
 
 inline std::ostream& err( )

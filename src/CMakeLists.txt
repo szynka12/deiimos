@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.1)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
@@ -27,11 +27,15 @@ PROJECT(${TARGET})
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
 
-set(TARGET_SRC "main.cpp" "${PROJECT_SOURCE_DIR}/XMLHandler.cpp")
+set(TARGET_SRC  "main.cpp" 
+                "${PROJECT_SOURCE_DIR}/io/xml/XMLHandler.cpp"
+                "${PROJECT_SOURCE_DIR}/msgstream.cpp"
+                "${PROJECT_SOURCE_DIR}/io/xml/xmlexceptions.cpp")
 
 # The following folder will be included
 include_directories("${PROJECT_SOURCE_DIR}",  
-                    "${PROJECT_SOURCE_DIR}/../external/src/tinyxml2")
+                    "${PROJECT_SOURCE_DIR}/../external/src/tinyxml2"
+                    "${PROJECT_SOURCE_DIR}/io/xml")
 
 # add_executable(main ${PROJECT_SOURCE_DIR}/main.cpp ${SOURCES})
 
@@ -44,5 +48,5 @@ include_directories("${PROJECT_SOURCE_DIR}",
 
 DEAL_II_INVOKE_AUTOPILOT()
 
-target_include_directories(${TARGET} PRIVATE "${PROJECT_SOURCE_DIR}")
+target_include_directories(${TARGET} PRIVATE "${PROJECT_SOURCE_DIR}" )
 target_link_libraries(${TARGET} "${PROJECT_SOURCE_DIR}/../external/lib/tinyxml2/libtinyxml2.so")

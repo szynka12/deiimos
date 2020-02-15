@@ -1,27 +1,18 @@
-#include "XMLHandler.h"
+#include "xmlexceptions.h"
 
 namespace deiimos
 {
-namespace xmlhandler
+namespace io
 {
-
-Node::Node( tinyxml2::XMLHandle h, std::string path ) : h_( h ), path_( path )
-{
-    // check if underlying node is not nullptr
-    AssertThrow( h_.ToNode( ), XMLNoNodeException( path ) );
-}
-
-Node Node::get_child( const char* name )
-{
-    return Node( h_.FirstChildElement( name ), path_ + "/" + name );
-}
-
-void Node::safe_check( tinyxml2::XMLError e )
+void xml_check( tinyxml2::XMLError e,
+                std::string        arg1,
+                std::string        arg2,
+                std::string        arg3 )
 {
     switch ( e )
     {
         case tinyxml2::XML_SUCCESS: break;
-        case tinyxml2::XML_NO_ATTRIBUTE: throw XML_NO_ATTRIBUTE( );
+        case tinyxml2::XML_NO_ATTRIBUTE: throw XML_NO_ATTRIBUTE( arg1, arg2 );
         case tinyxml2::XML_WRONG_ATTRIBUTE_TYPE:
             throw XML_WRONG_ATTRIBUTE_TYPE( );
         case tinyxml2::XML_ERROR_FILE_NOT_FOUND:
@@ -49,31 +40,12 @@ void Node::safe_check( tinyxml2::XMLError e )
             throw XML_ERROR_MISMATCHED_ELEMENT( );
         case tinyxml2::XML_ERROR_PARSING: throw XML_ERROR_PARSING( );
         case tinyxml2::XML_CAN_NOT_CONVERT_TEXT:
-            throw XML_CAN_NOT_CONVERT_TEXT( );
-        case tinyxml2::XML_NO_TEXT_NODE: throw XML_NO_TEXT_NODE( );
+            throw XML_CAN_NOT_CONVERT_TEXT( arg1, arg2 );
+        case tinyxml2::XML_NO_TEXT_NODE: throw XML_NO_TEXT_NODE( arg1 );
         case tinyxml2::XML_ELEMENT_DEPTH_EXCEEDED:
             throw XML_ELEMENT_DEPTH_EXCEEDED( );
         case tinyxml2::XML_ERROR_COUNT: throw XML_ERROR_COUNT( );
     }
 }
-
-template <>
-double Node::value< double >( )
-{
-    double value;
-    try
-    {
-        safe_check( h_.ToElement( )->QueryDoubleText( &value ) );
-    }
-    catch ( ... )
-    {
-        show_me( );
-        throw;
-    }
-    return value;
-}
-
-Node::~Node( ) {}
-
-} // namespace xmlhandler
+} // namespace io
 } // namespace deiimos
