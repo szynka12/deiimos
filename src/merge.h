@@ -50,7 +50,6 @@ void merge_triangulations_mine(
             cells.push_back( cell_data );
         }
 
-        std::cout << "Copying manifolds" << std::endl;
         for ( CellData< 1 >& line_data : tria_subcell_data.boundary_lines )
         {
             for ( unsigned int& vertex_n : line_data.vertices )

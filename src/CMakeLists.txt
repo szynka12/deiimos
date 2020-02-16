@@ -35,7 +35,8 @@ set(TARGET_SRC  "main.cpp"
 include_directories("${PROJECT_SOURCE_DIR}",  
                     "${PROJECT_SOURCE_DIR}/../external/src/tinyxml2"
                     "${PROJECT_SOURCE_DIR}/io/xml"
-                    "${PROJECT_SOURCE_DIR}/io/console")
+                    "${PROJECT_SOURCE_DIR}/io/console"
+                    "${PROJECT_SOURCE_DIR}/mesh")
 
 # add_executable(main ${PROJECT_SOURCE_DIR}/main.cpp ${SOURCES})
 

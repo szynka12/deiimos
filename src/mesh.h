@@ -20,9 +20,9 @@
 #include <vector>
 namespace dealii
 {
-template < int dim >
-void print_mesh_info( const Triangulation< dim >& triangulation,
-                      const std::string&          filename )
+template < int dim, int spacedim = dim >
+void print_mesh_info( const Triangulation< dim, spacedim >& triangulation,
+                      const std::string&                    filename )
 {
     std::cout << "Mesh info:" << std::endl
               << " dimension: " << dim << std::endl
@@ -50,11 +50,11 @@ void print_mesh_info( const Triangulation< dim >& triangulation,
 
     // Finally, produce a graphical representation of the mesh to an output
     // file:
-    std::ofstream out( filename );
-    std::ofstream out_vtk( "aa.vtu" );
+    std::ofstream out_eps( filename + ".eps" );
+    std::ofstream out_vtk( filename + ".vtu" );
     GridOut       grid_out;
-    grid_out.write_eps( triangulation, out );
-    grid_out.write_vtu< 3 >( triangulation, out_vtk );
+    // grid_out.write_eps( triangulation, out_eps );
+    grid_out.write_vtu< dim, spacedim >( triangulation, out_vtk );
     std::cout << " written to " << filename << std::endl << std::endl;
 }
 

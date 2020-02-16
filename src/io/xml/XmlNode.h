@@ -6,6 +6,7 @@
 #include "tinyxml2.h"
 #include "xmlexceptions.h"
 
+#include <array>
 #include <iostream>
 #include <memory>
 #include <stdexcept>
@@ -23,7 +24,7 @@ class XmlNode
     // read one element from the space delimited string and convert it to one
     // element of the Type T
     template < typename T >
-    bool read_tuple_element( std::istream& in, T& value );
+    bool read_element( std::istream& in, T& value );
 
     // write several elements from space delimited string into the Tuple T
     template < typename Tuple, std::size_t... I >
@@ -34,6 +35,9 @@ class XmlNode
     // convert space delimited string to tuple
     template < typename... Targs >
     std::tuple< Targs... > to_tuple( std::string str_ );
+
+    template < typename T, int N >
+    std::array< T, N > to_array( std::string str_ );
 
   protected:
     // handle wrapping a node pointer
@@ -61,6 +65,10 @@ class XmlNode
     // get tuple of values
     template < typename... Targs >
     std::tuple< Targs... > tuple_value( );
+
+    // get array of values
+    template < typename T, int N >
+    std::array< T, N > array_value( );
 
     // get attribute value
     template < typename T >
@@ -93,7 +101,7 @@ T XmlNode::attribute_or_default( const char* name, T default_value )
 }
 
 template < typename T >
-bool XmlNode::read_tuple_element( std::istream& in, T& value )
+bool XmlNode::read_element( std::istream& in, T& value )
 {
     in >> value;
     return true;
@@ -105,7 +113,7 @@ void XmlNode::read_tuple_elements( std::istream& in,
                                    std::index_sequence< I... > )
 {
     std::initializer_list< bool >{
-      read_tuple_element( in, std::get< I >( value ) )...};
+      read_element( in, std::get< I >( value ) )...};
 }
 
 template < typename... Targs >
@@ -123,10 +131,30 @@ std::tuple< Targs... > XmlNode::to_tuple( std::string str_ )
     }
 }
 
+template < typename T, int N >
+std::array< T, N > XmlNode::to_array( std::string str_ )
+{
+    std::istringstream in( str_ );
+    std::array< T, N > a;
+    for ( int i = 0; i < N; i++ ) { read_element( in, a[i] ); }
+    if ( in && in.eof( ) ) { return a; }
+    else
+    {
+        throw XML_CAN_NOT_CONVERT_TEXT(
+          path_, std::string( "array with N = " + std::to_string( N ) ) );
+    }
+}
+
 template < typename... Targs >
 std::tuple< Targs... > XmlNode::tuple_value( )
 {
     return to_tuple< Targs... >( value< std::string >( ) );
+}
+
+template < typename T, int N >
+std::array< T, N > XmlNode::array_value( )
+{
+    return to_array< T, N >( value< std::string >( ) );
 }
 
 template < typename... Targs >
