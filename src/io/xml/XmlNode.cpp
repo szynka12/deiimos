@@ -19,6 +19,11 @@ XmlNode XmlNode::get_child( const char* name )
     return XmlNode( h_.FirstChildElement( name ), path_ + "/" + name );
 }
 
+bool XmlNode::has_child( const char* name )
+{
+    return h_.FirstChildElement( name ).ToNode( ) != nullptr;
+}
+
 std::vector< XmlNode > XmlNode::get_siblings( const char* name )
 {
     std::vector< XmlNode > output;

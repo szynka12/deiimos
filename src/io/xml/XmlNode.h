@@ -54,6 +54,8 @@ class XmlNode
     // get child node
     XmlNode get_child( const char* name );
 
+    bool has_child( const char* name );
+
     std::vector< XmlNode > get_siblings( const char* name );
 
     inline XmlNode operator[]( const char* name ) { return get_child( name ); }
