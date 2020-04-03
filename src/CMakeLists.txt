@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.1)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Set the name of the project and target:
+SET(TARGET "main")
 
 FIND_PACKAGE(deal.II 9.1.0 QUIET
   HINTS
@@ -23,9 +25,6 @@ DEAL_II_INITIALIZE_CACHED_VARIABLES()
 PROJECT(${TARGET})
 
 
-# Set the output folder where your program will be created
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
-set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
 
 set(TARGET_SRC  "main.cpp" 
                 "${PROJECT_SOURCE_DIR}/io/xml/XmlNode.cpp"
@@ -36,7 +35,8 @@ set(TARGET_SRC  "main.cpp"
 include_directories("${PROJECT_SOURCE_DIR}",  
                     "${PROJECT_SOURCE_DIR}/../external/src/tinyxml2"
                     "${PROJECT_SOURCE_DIR}/io/xml"
-                    "${PROJECT_SOURCE_DIR}/io/console")
+                    "${PROJECT_SOURCE_DIR}/io/console"
+                    "${PROJECT_SOURCE_DIR}/mesh")
 
 # add_executable(main ${PROJECT_SOURCE_DIR}/main.cpp ${SOURCES})
 

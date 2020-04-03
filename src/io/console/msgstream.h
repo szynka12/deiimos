@@ -52,7 +52,7 @@ class MsgObject
 
     std::ostream& msg( v_level l );
 
-    void set_verobisity( v_level l );
+    void set_verbosity( v_level l );
     void set_warning( bool flag );
 };
 
@@ -63,13 +63,13 @@ extern MsgObject msg_;
 
 }
 
-inline void verbosity( MsgObject::v_level l )
+inline void set_verbosity( MsgObject::v_level l )
 {
-    INTERNAL::msg_.set_verobisity( l );
+    INTERNAL::msg_.set_verbosity( l );
 }
-inline void verbosity( int l )
+inline void set_verbosity( int l )
 {
-    INTERNAL::msg_.set_verobisity(
+    INTERNAL::msg_.set_verbosity(
       static_cast< deiimos::MsgObject::v_level >( l ) );
 }
 

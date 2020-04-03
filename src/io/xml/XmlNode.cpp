@@ -19,6 +19,24 @@ XmlNode XmlNode::get_child( const char* name )
     return XmlNode( h_.FirstChildElement( name ), path_ + "/" + name );
 }
 
+bool XmlNode::has_child( const char* name )
+{
+    return h_.FirstChildElement( name ).ToNode( ) != nullptr;
+}
+
+std::vector< XmlNode > XmlNode::get_siblings( const char* name )
+{
+    std::vector< XmlNode > output;
+    tinyxml2::XMLHandle    handle = get_child( name ).h_;
+
+    while ( handle.ToNode( ) )
+    {
+        output.push_back( XmlNode( handle, path_ + "/" + name ) );
+        handle = handle.NextSiblingElement( name );
+    }
+    return output;
+}
+
 // Node value getters for various data types
 
 template <>
