@@ -34,7 +34,7 @@ std::ostream& MsgObject::msg( v_level l )
     }
 }
 
-void MsgObject::set_verobisity( v_level l ) { out_level_ = l; }
+void MsgObject::set_verbosity( v_level l ) { out_level_ = l; }
 void MsgObject::set_warning( bool flag ) { warning_enabled_ = flag; }
 
 namespace INTERNAL

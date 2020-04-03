@@ -1,0 +1,13 @@
+<deiimos_config version="0.1" type="ascii">
+    <vertices>
+        <v>0 0 0</v>
+        <v>1 1 1</v>
+        <v>3 2 3</v>
+        <v>1 8 3</v>
+    </vertices>
+    <cells>
+        <c>0 1</c>
+        <c>1 2</c>
+        <c>2 3</c>
+    </cells>
+</deiimos_config>

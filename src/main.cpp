@@ -1,5 +1,10 @@
+#include "ManifoldFactory.h"
+#include "MeshReader.h"
+#include "TopologyInfo.h"
 #include "XmlHandler.h"
 #include "XmlNode.h"
+#include "merge.h"
+#include "mesh.h"
 #include "msgstream.h"
 #include "tinyxml2.h"
 
@@ -7,88 +12,69 @@
 #include <chrono>
 #include <iostream>
 #include <tuple>
+#include <type_traits>
+#include <typeinfo>
 #include <utility>
 
-int main( void )
+// template < class T, std::size_t... I >
+// using testA = std::tuple< std::array< T, I >... >;
+
+// // using test = testA< int, std::make_index_sequence< 2 >{} >;
+
+// template < size_t... ints >
+// auto get_t( std::integer_sequence< size_t, ints... > int_seq )
+// {
+//     return testA< int, ints... >( );
+// }
+
+template < class T >
+std::string type_name( )
+{
+    typedef typename std::remove_reference< T >::type TR;
+    std::unique_ptr< char, void ( * )( void* ) >      own(
+#ifndef _MSC_VER
+      abi::__cxa_demangle( typeid( TR ).name( ), nullptr, nullptr, nullptr ),
+#else
+      nullptr,
+#endif
+      std::free );
+    std::string r = own != nullptr ? own.get( ) : typeid( TR ).name( );
+    if ( std::is_const< TR >::value ) r += " const";
+    if ( std::is_volatile< TR >::value ) r += " volatile";
+    if ( std::is_lvalue_reference< T >::value )
+        r += "&";
+    else if ( std::is_rvalue_reference< T >::value )
+        r += "&&";
+    return r;
+}
+
+int main( )
 {
 
-    tinyxml2::XMLDocument doc;
-    doc.LoadFile( "../data/configs/test1.xml" );
+    deiimos::set_verbosity( 3 );
 
-    tinyxml2::XMLHandle docHandle( &doc );
+    dealii::Triangulation< 3, 3 > output_tria;
 
-    // deiimos::xmlhandler::Node n( docHandle, "" );
-    tinyxml2::XMLHandle h = docHandle.FirstChildElement( "deiimos_config" );
-
-    deiimos::io::XmlNode n( h, std::string( "deiimos_config" ) );
-    deiimos::msg( )
-      << n.get_child( "section" ).get_child( "double" ).value< double >( )
-      << std::endl;
-
-    deiimos::msg( )
-      << n.get_child( "section" ).get_child( "text" ).value< std::string >( )
-      << std::endl;
-
-    deiimos::msg( )
-      << n.get_child( "section" ).get_child( "int" ).value< int >( )
-      << std::endl;
-
-    deiimos::msg( )
-      << n.get_child( "section" ).get_child( "label" ).value< size_t >( )
-      << std::endl;
-
-    deiimos::msg( )
-      << n.get_child( "section" ).get_child( "bool" ).value< bool >( )
-      << std::endl;
-
-    deiimos::msg( ) << n.get_child( "section" )
-                         .get_child( "doubleAttr" )
-                         .attribute< double >( "a" )
-                    << std::endl;
-
-    deiimos::msg( ) << n.get_child( "section" )
-                         .get_child( "doubleAttr" )
-                         .attribute_or_default< double >( "b", 3.14 )
-                    << std::endl;
-
-    deiimos::msg( )
-      << n.get_child( "section" ).get_child( "intAttr" ).attribute< int >( "a" )
-      << std::endl;
-
-    deiimos::msg( ) << n.get_child( "section" )
-                         .get_child( "labelAttr" )
-                         .attribute< size_t >( "a" )
-                    << std::endl;
-
-    deiimos::msg( ) << n.get_child( "section" )
-                         .get_child( "textAttr" )
-                         .attribute< std::string >( "a" )
-                    << std::endl;
-
-    deiimos::msg( ) << n.get_child( "section" )
-                         .get_child( "boolAttr" )
-                         .attribute< bool >( "a" )
-                    << std::endl;
-
-    auto t = n.get_child( "section" )
-               .get_child( "tuple" )
-               .tuple_attribute< int, int, std::string >( "a" );
-
-    deiimos::msg( ) << std::get< 0 >( t ) << " " << std::get< 1 >( t ) << " "
-                    << std::get< 2 >( t ) << std::endl;
-
-    deiimos::io::XmlHandler safe_doc( "../data/configs/test1.xml" );
+    deiimos::io::XmlHandler safe_doc( "../data/configs/simple_mesh.xml" );
     safe_doc.load( );
 
-    deiimos::msg( ) << safe_doc.get_child( "deiimos_config" )
-                         .get_child( "section" )
-                         .get_child( "boolAttr" )
-                         .attribute< bool >( "a" )
-                    << std::endl;
+    deiimos::mesh::MeshReader< 3, 3 > m( output_tria );
+    m.read_verts( safe_doc );
+    m.read_cells( safe_doc );
+    m.read_manifolds( safe_doc );
 
-    deiimos::msg( ) << safe_doc["deiimos_config"]["section"]["boolAttr"]
-                         .attribute< bool >( "a" )
-                    << std::endl;
+    m.generate_meshes( );
+    m.generate_topology_data( );
+    m.combine_meshes( );
+    m.clear_meshes( );
 
-    return ( 0 );
+    dealii::print_mesh_info( output_tria, "test_1_1" );
+
+    auto t = deiimos::mesh::get_topology_info< 3, 3, 3 >( );
+
+    std::cout << type_name< decltype( t ) >( ) << '\n';
+
+    // static_assert( std::is_same< decltype( b ), testA< int, 1 > >::value, ""
+    // );
+    return 0;
 }
